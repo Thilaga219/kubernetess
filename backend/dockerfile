@@ -1,0 +1,18 @@
+#Build stage
+# using latest maven:3.9.9-eclipse-temurin-20 image which will FULL maven installation - JDK 20,
+FROM maven:3.9.3-eclipse-temurin-20 AS build
+# setting wroking directory
+WORKDIR /app
+#  copy dependency and sorce code
+COPY pom.xml .
+COPY src ./src
+# run and package as jar file
+RUN mvn clean package -DskipTests
+
+## RUN stage
+FROM eclipse-temurin:20-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+#exposing port for the application
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","app.jar"]

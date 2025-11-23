@@ -1,0 +1,35 @@
+backend:
+  image: 767397794468.dkr.ecr.ap-southeast-2.amazonaws.com/thilaga:backend
+  port: 8080
+  replicas: 2
+  env: 
+    DB_HOST: postgres
+    DB_NAME: mydb
+    DB_USER: postgres
+    DB_PASSWORD: postgres
+
+frontend:
+  image: 767397794468.dkr.ecr.ap-southeast-2.amazonaws.com/thilaga:frontend
+  port: 80
+  replicas: 2
+
+postgres: 
+  image: 767397794468.dkr.ecr.ap-southeast-2.amazonaws.com/thilaga:postgres
+  port: 5432
+  replicas: 1
+  username: postgres
+  password: postgres
+  database: mydb
+  persistence: true
+
+psp:
+  enabled: false
+
+  ######################################
+# Affinities for individual workloads
+# set in the following way:
+# <workload>:
+#   affinity: {}
+#   nodeSelector: {}
+#   tolerations: []
+######################################
